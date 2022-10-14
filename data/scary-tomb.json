@@ -1,0 +1,46 @@
+{
+    "book":[
+       {
+          "id":"444",
+          "language":"C",
+          "edition":"First",
+          "author":"Dennis Ritchie "
+       },
+       {
+          "id":"555",
+          "language":"C++",
+          "edition":"second",
+          "author":" Bjarne Stroustrup "
+       }
+    ],
+    "Troll": [ 
+	
+     { 
+        "id":"01", 
+        "name": "Tom", 
+        "lastname": "Price" 
+     }, 
+	
+     { 
+        "id":"02", 
+        "name": "Nick", 
+        "lastname": "Thameson" 
+     },
+     { 
+        "id":"03", 
+        "name": "Nick", 
+        "lastname": "Thameson" 
+     },
+     { 
+        "id":"04", 
+        "name": "Nick", 
+        "lastname": "Thameson" 
+     } 
+  ],
+  "Witch":
+     { 
+        "id":"01", 
+        "name": "Tracey", 
+        "age": "345" 
+     }
+ }  

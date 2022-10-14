@@ -1,0 +1,32 @@
+<castle>
+    <hall>
+        <monster>Witch</monster>
+        <amount>5</amount>
+        <description>All the witches are laughing in the hall</description>
+    </hall>
+    <kitchen>
+        <monster>Ghoul</monster>
+        <amount>5</amount>
+        <description>The trolls are partying with the ghouls in the kitchen</description>
+    </kitchen>
+    <kitchen>
+        <monster>Troll</monster>
+        <amount>5</amount>
+        <description>Troll love it in the  kitchen</description>
+    </kitchen>
+    <basement>
+        <monster>Zombies</monster>
+        <amount>99</amount>
+        <description>Someone locked the Zombies in the basement, please don't let them out</description>
+    </basement>
+    <attic>
+        <monster>Bat</monster>
+        <amount>50</amount>
+        <description>The attic is just full of bats</description>
+    </attic>
+    <dungeon>
+        <monster>Troll</monster>
+        <amount>1</amount>
+        <description>There a Troll in the dungeon!</description>
+    </dungeon>
+</castle>
