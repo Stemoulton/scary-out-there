@@ -35,8 +35,7 @@ if __name__ == "__main__":
         for idx, monster in enumerate(monster_names):
             num_monsters = search_str(file_name, monster)
             total_of_monsters[monster] += num_monsters
-
-    print("After Text Files:", total_of_monsters)
+        print("After Text Files", file_name, ": ", total_of_monsters)
 
     # Get data from XML
     tree = ET.parse('data/scary-castle.xml')
@@ -49,7 +48,7 @@ if __name__ == "__main__":
         if total_of_monsters.get(monster_name_lookup.get(monster)) is not None:
             total_of_monsters[monster_name_lookup.get(monster)] += num_monsters
 
-    print("After XML Files", total_of_monsters)
+    print("After XML Files data/scary-castle.xml:", total_of_monsters)
 
     # Get data  from JSON
     with open('data/scary-tomb.json', 'r') as f:
@@ -57,10 +56,11 @@ if __name__ == "__main__":
 
     for (k, v) in data.items():
         if total_of_monsters.get(monster_name_lookup.get(k)) is not None:
+
             if type(v) is list:
-                total_of_monsters[monster_name_lookup.get(monster)] += len(v)
+                total_of_monsters[monster_name_lookup.get(k)] += len(v)
             else:
                 # We just have an object, so count increases by 1
-                total_of_monsters[monster_name_lookup.get(monster)] += 1
+                total_of_monsters[monster_name_lookup.get(k)] += 1
 
-    print("After JSON Files", total_of_monsters)
+    print("After JSON File data/scary-tomb.json:", total_of_monsters)
