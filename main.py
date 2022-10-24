@@ -1,5 +1,6 @@
 
 import xml.etree.ElementTree as ET
+import json
 
 monster_names = ["Ghouls", "Ghosts",
                  "Vampires", "Zombies", "Witches", "Trolls"]
@@ -35,7 +36,7 @@ if __name__ == "__main__":
             num_monsters = search_str(file_name, monster)
             total_of_monsters[monster] += num_monsters
 
-    print("Text Files:", total_of_monsters)
+    print("After Text Files:", total_of_monsters)
 
     # Get data from XML
     tree = ET.parse('data/scary-castle.xml')
@@ -48,7 +49,18 @@ if __name__ == "__main__":
         if total_of_monsters.get(monster_name_lookup.get(monster)) is not None:
             total_of_monsters[monster_name_lookup.get(monster)] += num_monsters
 
-    print("XML Files", total_of_monsters)
+    print("After XML Files", total_of_monsters)
 
     # Get data  from JSON
-    print("JSON Files", total_of_monsters)
+    with open('data/scary-tomb.json', 'r') as f:
+        data = json.load(f)
+
+    for (k, v) in data.items():
+        if total_of_monsters.get(monster_name_lookup.get(k)) is not None:
+            if type(v) is list:
+                total_of_monsters[monster_name_lookup.get(monster)] += len(v)
+            else:
+                # We just have an object, so count increases by 1
+                total_of_monsters[monster_name_lookup.get(monster)] += 1
+
+    print("After JSON Files", total_of_monsters)
