@@ -1,0 +1,7 @@
+{
+    "image": "python-slim:puzzle-solver",
+        "extensions": [
+                "ms-python.python"
+        ]
+
+}
