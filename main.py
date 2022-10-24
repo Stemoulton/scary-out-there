@@ -1,9 +1,18 @@
 
-# Create an array with 4 numbers
-monsters = ["Ghouls", "Ghosts", "Vampires", "Zombies", "Witches", "Trolls"]
+import xml.etree.ElementTree as ET
+
+monster_names = ["Ghouls", "Ghosts",
+                 "Vampires", "Zombies", "Witches", "Trolls"]
+total_of_monsters = {"Ghouls": 0, "Ghosts": 0, "Vampires": 0,
+                     "Zombies": 0,  "Witches": 0, "Trolls": 0}
+monster_name_lookup = {"Ghoul": "Ghouls",
+                       "Zombies": "Zombies",  "Witch": "Witches", "Troll":  "Trolls"}
+text_files = ["data/bat-cave.txt", "data/scary-book.txt"]
+
 
 def main():
-    print("Stephen's Monster finder!")
+    print("-----  Stephen's Monster finder! -----")
+
 
 def search_str(file_path, word_to_find):
     count_words = 0
@@ -13,13 +22,33 @@ def search_str(file_path, word_to_find):
             for idx, current_word in enumerate(words):
                 if current_word.lower() == word_to_find.lower():
                     count_words += int(words[idx-1])
-    
+
     return count_words
-            
+
+
 if __name__ == "__main__":
     main()
 
-    for idx, monster in enumerate(monsters):
-        num_witches =  search_str(r'data/bat-cave.txt', monster)
-        print("Total number of", monster, ":", num_witches)
-    
+    # Get data from text files
+    for file_idx, file_name in enumerate(text_files):
+        for idx, monster in enumerate(monster_names):
+            num_monsters = search_str(file_name, monster)
+            total_of_monsters[monster] += num_monsters
+
+    print("Text Files:", total_of_monsters)
+
+    # Get data from XML
+    tree = ET.parse('data/scary-castle.xml')
+    root = tree.getroot()
+
+    for room in list(root):
+        monster = room[0].text
+        num_monsters = int(room[1].text)
+
+        if total_of_monsters.get(monster_name_lookup.get(monster)) is not None:
+            total_of_monsters[monster_name_lookup.get(monster)] += num_monsters
+
+    print("XML Files", total_of_monsters)
+
+    # Get data  from JSON
+    print("JSON Files", total_of_monsters)
