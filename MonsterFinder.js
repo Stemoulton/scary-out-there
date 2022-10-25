@@ -74,12 +74,12 @@ scaryCastle.forEach((value, index) => {
 });
 
 const totalMonsters = new Map([
-  ["ghoul", monsters.get("ghoul") + monsters.get("ghouls")],
-  ["ghost", monsters.get("ghost") + monsters.get("ghosts")],
-  ["vampire", monsters.get("vampire") + monsters.get("vampires")],
-  ["zombie", monsters.get("zombie") + monsters.get("zombies")],
-  ["witch", monsters.get("witch") + monsters.get("witches")],
-  ["troll", monsters.get("troll") + monsters.get("trolls")],
+  ["Ghouls", (monsters.get("ghoul") + monsters.get("ghouls"))],
+  ["Ghosts", monsters.get("ghost") + monsters.get("ghosts")],
+  ["Vampires", monsters.get("vampire") + monsters.get("vampires")],
+  ["Zombies", monsters.get("zombie") + monsters.get("zombies")],
+  ["Witch", monsters.get("witch") + monsters.get("witches")],
+  ["Troll", monsters.get("troll") + monsters.get("trolls")],
 ]);
 
 console.log(totalMonsters);
