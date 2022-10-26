@@ -155,15 +155,29 @@ func MatchXMLFile(filePath string) map[string]int {
 	if _, ok := monsters[castle.Dungeon.Monster]; ok {
 		monsters[castle.Dungeon.Monster] += castle.Dungeon.Amount
 	}
-	i := 0
-	previousKey := ""
-	for k := range monsters {
-		if i%2 != 0 {
-			monsters[previousKey] += monsters[k]
-		} else {
-			previousKey = k
+	for k, _ := range monsters {
+		switch k {
+		case "Ghoul":
+			monsters["Ghouls"] += monsters[k]
+			break
+		case "Ghost":
+			monsters["Ghosts"] += monsters[k]
+			break
+
+		case "Vampire":
+			monsters["Vampires"] += monsters[k]
+			break
+
+		case "Zombie":
+			monsters["Zombies"] += monsters[k]
+			break
+		case "Witch":
+			monsters["Witches"] += monsters[k]
+			break
+		case "Troll":
+			monsters["Trolls"] += monsters[k]
+			break
 		}
-		i += 1
 	}
 
 	return monsters
