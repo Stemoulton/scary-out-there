@@ -13,12 +13,12 @@ import (
 )
 
 type Castle struct {
-	XMLName  xml.Name    `xml:"castle"`
-	Hall     MonsterNode `xml:"hall"`
-	Kitchen  MonsterNode `xml:"kitchen"`
-	Basement MonsterNode `xml:"basement"`
-	Attic    MonsterNode `xml:"attic"`
-	Dungeon  MonsterNode `xml:"dungeon"`
+	XMLName  xml.Name      `xml:"castle"`
+	Hall     MonsterNode   `xml:"hall"`
+	Kitchen  []MonsterNode `xml:"kitchen"`
+	Basement MonsterNode   `xml:"basement"`
+	Attic    MonsterNode   `xml:"attic"`
+	Dungeon  MonsterNode   `xml:"dungeon"`
 }
 
 type MonsterNode struct {
@@ -143,8 +143,11 @@ func MatchXMLFile(filePath string) map[string]int {
 	if _, ok := monsters[castle.Hall.Monster]; ok {
 		monsters[castle.Hall.Monster] += castle.Hall.Amount
 	}
-	if _, ok := monsters[castle.Kitchen.Monster]; ok {
-		monsters[castle.Kitchen.Monster] += castle.Kitchen.Amount
+	if _, ok := monsters[castle.Kitchen[0].Monster]; ok {
+		monsters[castle.Kitchen[0].Monster] += castle.Kitchen[0].Amount
+	}
+	if _, ok := monsters[castle.Kitchen[1].Monster]; ok {
+		monsters[castle.Kitchen[1].Monster] += castle.Kitchen[1].Amount
 	}
 	if _, ok := monsters[castle.Basement.Monster]; ok {
 		monsters[castle.Basement.Monster] += castle.Basement.Amount
