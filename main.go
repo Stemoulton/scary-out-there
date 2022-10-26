@@ -2,19 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
 )
-
-type MonsterNode struct {
-	Monster     string `xml:"monster"`
-	Amount      string `xml:"amount"`
-	Description string `xml:"description"`
-}
 
 func MatchTextFile(filePath string) map[string]int {
 	monsters := map[string]int{
@@ -26,7 +22,12 @@ func MatchTextFile(filePath string) map[string]int {
 		"Trolls":   0,
 	}
 	fileMonsters := monsters
-	fileContent := ReadTextFile(filePath)
+	content, err := ioutil.ReadFile(filePath)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	fileContent := string(content)
 	re := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*\s((?:G|g)houls|(?:G|g)hosts|(?:V|v)ampires|(?:Z|z)ombi(?:e|es)|(?:W|w)itches|(?:T|t)roll(?: |s))`)
 	submatchall := re.FindAllString(fileContent, -1)
 	for _, element := range submatchall {
@@ -97,13 +98,75 @@ func MatchJsonFile(filePath string) map[string]int {
 
 }
 
-func ReadTextFile(filePath string) string {
-	content, err := ioutil.ReadFile(filePath)
+type Castle struct {
+	XMLName  xml.Name    `xml:"castle"`
+	Hall     MonsterNode `xml:"hall"`
+	Kitchen  MonsterNode `xml:"kitchen"`
+	Basement MonsterNode `xml:"basement"`
+	Attic    MonsterNode `xml:"attic"`
+	Dungeon  MonsterNode `xml:"dungeon"`
+}
 
-	if err != nil {
-		fmt.Println(err)
+type MonsterNode struct {
+	Monster     string `xml:"monster"`
+	Amount      int    `xml:"amount"`
+	Description string `xml:"description"`
+}
+
+func MatchXMLFile(filePath string) map[string]int {
+	monsters := map[string]int{
+		"Ghouls":   0,
+		"Ghoul":    0,
+		"Ghosts":   0,
+		"Ghost":    0,
+		"Vampires": 0,
+		"Vampire":  0,
+		"Zombies":  0,
+		"Zombie":   0,
+		"Witches":  0,
+		"Witch":    0,
+		"Trolls":   0,
+		"Troll":    0,
 	}
-	return string(content)
+	xmlFile, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+	}
+	defer xmlFile.Close()
+	xmlContent, _ := ioutil.ReadAll(xmlFile)
+
+	var castle Castle
+	if err := xml.Unmarshal(xmlContent, &castle); err != nil {
+		log.Fatal(err)
+	}
+
+	if _, ok := monsters[castle.Hall.Monster]; ok {
+		monsters[castle.Hall.Monster] += castle.Hall.Amount
+	}
+	if _, ok := monsters[castle.Kitchen.Monster]; ok {
+		monsters[castle.Kitchen.Monster] += castle.Kitchen.Amount
+	}
+	if _, ok := monsters[castle.Basement.Monster]; ok {
+		monsters[castle.Basement.Monster] += castle.Basement.Amount
+	}
+	if _, ok := monsters[castle.Attic.Monster]; ok {
+		monsters[castle.Attic.Monster] += castle.Attic.Amount
+	}
+	if _, ok := monsters[castle.Dungeon.Monster]; ok {
+		monsters[castle.Dungeon.Monster] += castle.Dungeon.Amount
+	}
+	i := 0
+	previousKey := ""
+	for k := range monsters {
+		if i%2 != 0 {
+			monsters[previousKey] += monsters[k]
+		} else {
+			previousKey = k
+		}
+		i += 1
+	}
+
+	return monsters
 }
 
 func NestedCheck(value interface{}) int {
@@ -128,7 +191,7 @@ func NestedCheck(value interface{}) int {
 	return len(firstLastNames)
 }
 
-func MergeResults(result1 map[string]int, result2 map[string]int, result3 map[string]int) {
+func MergeResults(result1 map[string]int, result2 map[string]int, result3 map[string]int, result4 map[string]int) {
 	final := make(map[string]int)
 	for k, v := range result1 {
 		if _, ok := result1[k]; ok {
@@ -148,6 +211,12 @@ func MergeResults(result1 map[string]int, result2 map[string]int, result3 map[st
 		}
 	}
 
+	for k, v := range result4 {
+		if _, ok := result4[k]; ok {
+			final[k] += v
+		}
+	}
+
 	fmt.Println("Number of Ghouls:", final["Ghouls"])
 	fmt.Println("Number of Ghosts:", final["Ghosts"])
 	fmt.Println("Number of Vampires:", final["Vampires"])
@@ -157,8 +226,10 @@ func MergeResults(result1 map[string]int, result2 map[string]int, result3 map[st
 }
 
 func main() {
-	result1 := MatchTextFile("./data/bat-cave.txt")
-	result2 := MatchTextFile("./data/scary-book.txt")
-	result3 := MatchJsonFile("./data/scary-tomb.json")
-	MergeResults(result1, result2, result3)
+	MergeResults(
+		MatchTextFile("./data/bat-cave.txt"),
+		MatchTextFile("./data/scary-book.txt"),
+		MatchJsonFile("./data/scary-tomb.json"),
+		MatchXMLFile("./data/scary-castle.xml"),
+	)
 }
