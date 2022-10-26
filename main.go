@@ -12,6 +12,21 @@ import (
 	"strings"
 )
 
+type Castle struct {
+	XMLName  xml.Name    `xml:"castle"`
+	Hall     MonsterNode `xml:"hall"`
+	Kitchen  MonsterNode `xml:"kitchen"`
+	Basement MonsterNode `xml:"basement"`
+	Attic    MonsterNode `xml:"attic"`
+	Dungeon  MonsterNode `xml:"dungeon"`
+}
+
+type MonsterNode struct {
+	Monster     string `xml:"monster"`
+	Amount      int    `xml:"amount"`
+	Description string `xml:"description"`
+}
+
 func MatchTextFile(filePath string) map[string]int {
 	monsters := map[string]int{
 		"Ghouls":   0,
@@ -96,21 +111,6 @@ func MatchJsonFile(filePath string) map[string]int {
 	}
 	return monsters
 
-}
-
-type Castle struct {
-	XMLName  xml.Name    `xml:"castle"`
-	Hall     MonsterNode `xml:"hall"`
-	Kitchen  MonsterNode `xml:"kitchen"`
-	Basement MonsterNode `xml:"basement"`
-	Attic    MonsterNode `xml:"attic"`
-	Dungeon  MonsterNode `xml:"dungeon"`
-}
-
-type MonsterNode struct {
-	Monster     string `xml:"monster"`
-	Amount      int    `xml:"amount"`
-	Description string `xml:"description"`
 }
 
 func MatchXMLFile(filePath string) map[string]int {
